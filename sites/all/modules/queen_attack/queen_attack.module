@@ -1,0 +1,64 @@
+<?php
+
+function queen_attack_menu() {
+  $items['queen_attack'] = array(
+    'title' => 'Queen Attack',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('queen_attack_form'),
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['queen_attack_result'] = array(
+    'title' => 'Queen Attack Results',
+    'page callback' => 'queen_attack_result_display',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function queen_attack_form() {
+  $form['queen_x'] = array(
+    '#title' => 'Queen X',
+    '#type' => 'textfield',
+    '#description' => t("Enter the Queen's x-coordinate"),
+  );
+  $form['queen_y'] = array(
+    '#title' => 'Queen Y',
+    '#type' => 'textfield',
+    '#description' => t("Enter the Queen's y-coordinate"),
+  );
+  $form['position_x'] = array(
+    '#title' => 'Position X',
+    '#type' => 'textfield',
+    '#description' => t("Enter the x-coordinate for the position to be tested"),
+  );
+  $form['position_y'] = array(
+    '#title' => 'Position Y',
+    '#type' => 'textfield',
+    '#description' => t("Enter the y-coordinate for the position to be tested"),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Test',
+  );
+  return $form;
+}
+
+function queen_attack_form_submit($form, &$form_state) {
+  $queen_x = $form_state['values']['queen_x'];
+  $queen_y = $form_state['values']['queen_y'];
+  $position_x = $form_state['values']['position_x'];
+  $position_y = $form_state['values']['position_y'];
+  if (abs($queen_x - $position_x) === abs($queen_y - $position_y)) {
+    $result = 'Attackable';
+  } else {
+    $result = 'Not Attackable';
+  }
+  $_SESSION['queen_attack'] = $result;
+  $form_state['redirect'] = 'queen_attack_result';
+}
+
+function queen_attack_result_display() {
+  return $_SESSION['queen_attack'];
+}

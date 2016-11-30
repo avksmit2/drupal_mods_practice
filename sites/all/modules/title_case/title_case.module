@@ -1,0 +1,57 @@
+<?php
+
+function title_case_menu() {
+  $items['title_case'] = array(
+    'title' => 'Title Case Converter',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('title_case_form'),
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['title_case_success'] = array(
+    'title' => 'Result',
+    'page callback' => 'title_case_success',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function title_case_form() {
+  $form['sentence'] = array(
+    '#title' => 'Input Sentence',
+    '#type' => 'textfield',
+    '#description' => t('Enter a sentence to convert to title case'),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Convert',
+  );
+  return $form;
+}
+
+function title_case_form_submit($form, &$form_state) {
+  $input_sentence = strtolower($form_state['values']['sentence']);
+  $input_array = explode(" ", $input_sentence);
+  $output_array = array();
+  $articles = array('a', 'an', 'the', 'and', 'but', 'or', 'for', 'nor');
+  foreach($input_array as $index => $word) {
+    if ($index === 0) {
+      $output_array[] = ucfirst($word);
+    } elseif (!in_array($word, $articles)) {
+      $output_array[] = ucfirst($word);
+    } else {
+      $output_array[] = $word;
+    }
+  }
+  $output_sentence = implode(" ", $output_array);
+
+  $_SESSION['title_case_result'] = $output_sentence;
+  $form_state['redirect'] = 'title_case_success';
+}
+
+function title_case_success() {
+  $output = '<p>Your sentence in title case is:</p><br>';
+  $output .= "<p>" . $_SESSION['title_case_result'] . "</p>";
+  return $output;
+}

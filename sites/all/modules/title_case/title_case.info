@@ -1,0 +1,5 @@
+name = Title Case
+description = Adds a form to convert a sentence to title case.
+package = My First Modules
+core = 7.x
+files[] = title_case.module

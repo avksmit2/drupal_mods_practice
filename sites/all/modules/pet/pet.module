@@ -1,0 +1,23 @@
+<?php
+
+function pet_menu() {
+    $items = array();
+    $items['pet'] = array(
+      'title' => 'Pet Page',
+      'page callback' => 'pet_display',
+      'access callback' => TRUE,
+      'type' => MENU_NORMAL_ITEM,
+    );
+    return $items;
+}
+
+function pet_display() {
+  $dragon_image = '/' . drupal_get_path('module', 'pet') . '/images/dragon.jpg';
+  return "
+    <p>Komodo Dragon</p>
+    <br>
+    <a href='https://en.wikipedia.org/wiki/Komodo_dragon'>Wikipedia Link</a>
+    <br>
+    <img id='dragon_image' src='$dragon_image'>
+  ";
+}

@@ -1,0 +1,6 @@
+name = Cards
+description = Create pages with greeting cards for friends!
+package = My First Modules
+core = 7.x
+stylesheets[all][] = cards.styles.css
+files[] = cards.module

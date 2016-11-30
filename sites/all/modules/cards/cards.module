@@ -1,0 +1,23 @@
+<?php
+
+function cards_menu() {
+    $friends = array('Jonny', 'Jane', 'Tobin');
+    $items = array();
+          foreach ($friends as $friend) {
+                $items['cards/'.$friend] = array(
+                        'title' => "Greetings $friend!",
+                        'page callback' => 'greeting_cards',
+                        'page arguments' => array($friend),
+                        'access callback' => TRUE,
+                        'type' => MENU_NORMAL_ITEM,
+                );
+          }
+    return $items;
+}
+
+function greeting_cards($friend) {
+  $greeting_card = '/' . drupal_get_path('module', 'cards') . '/images/'.$friend.'_greeting.jpg';
+    return "
+    <img class='friend_card' src='$greeting_card'>
+    ";
+}
