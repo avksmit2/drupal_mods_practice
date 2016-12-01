@@ -1,0 +1,67 @@
+<?php
+  function state_poll_menu() {
+    $items['state_poll'] = array(
+      'title' => 'State Poll',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('state_poll_form'),
+      'access callback' => TRUE,
+      'type' => MENU_NORMAL_ITEM,
+    );
+    $items['poll_display'] = array(
+      'title' => 'State Favorite Ice Cream Poll',
+      'page callback' => 'state_poll_display',
+      'access callback' => TRUE,
+      'type' => MENU_CALLBACK,
+    );
+    return $items;
+  }
+
+  function state_poll_form() {
+    $form['ice_cream'] = array(
+      '#title' => 'Favorite Ice Cream:',
+      '#type' => 'textfield',
+      '#description' => t('Please enter your favorite ice cream of all time.'),
+      '#required' => TRUE,
+    );
+    $form['state'] = array(
+      '#title' => 'Your State',
+      '#type' => 'textfield',
+      '#description' => t('Please enter the name of the state you live in.'),
+      '#element_validate' => array('element_validate_letters', 'element_validate_length'),
+      '#required' => TRUE,
+    );
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => 'Submit Entry',
+    );
+    return $form;
+  }
+
+  function element_validate_letters($element) {
+    if (preg_match('/[^A-Za-z\s]/', $element['#value'])) {
+      form_error($element, t('No state includes anything but letters, nub!'));
+    }
+  }
+
+  function element_validate_length($element) {
+    $state_entry = explode(" ", $element['#value']);
+    if(count($state_entry) > 2) {
+      form_error($element, t('No state has more than two words, nub!'));
+    }
+  }
+
+  function state_poll_form_submit($form, &$form_state) {
+    $ice_cream = $form_state['values']['ice_cream'];
+    $state = $form_state['values']['state'];
+
+    $poll_entry = "Thank you for your entry! You have submitted that your favorite ice cream is: " . $ice_cream . ", and your state is: " . $state . ".";
+
+    $_SESSION['output'] = $poll_entry;
+
+    $form_state['redirect'] = 'poll_display';
+  }
+
+  function state_poll_display() {
+    $results = $_SESSION['output'];
+    return $results;
+  }
