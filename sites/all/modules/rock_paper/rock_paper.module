@@ -1,0 +1,82 @@
+<?php
+
+function rock_paper_menu() {
+  $items['rock_paper'] = array(
+    'title' => 'Rock Paper Scissors Player 1',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('rock_paper_1_form'),
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['rock_paper_2'] = array(
+    'title' => 'Rock Paper Scissors Player 2',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('rock_paper_2_form'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  $items['rock_paper_results'] = array(
+    'title' => 'Rock Paper Scissors Results',
+    'page callback' => 'rock_paper_result_display',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function rock_paper_1_form() {
+  $form['choice_1'] = array(
+    '#title' => 'Player 1 choice',
+    '#type' => 'textfield',
+    '#description' => t('Enter Player 1 choice of attack'),
+    '#required' => TRUE,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'To Player 2',
+  );
+  return $form;
+}
+
+function rock_paper_1_form_submit($form, &$form_state) {
+  $choice_1 = $form_state['values']['choice_1'];
+  $_SESSION['choice_1'] = $choice_1;
+  $form_state['redirect'] = 'rock_paper_2';
+}
+
+function rock_paper_2_form() {
+  $form['choice_2'] = array(
+    '#title' => 'Player 2 choice',
+    '#type' => 'textfield',
+    '#description' => t('Enter Player 2 choice of attack'),
+    '#required' => TRUE,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Play',
+  );
+  return $form;
+}
+
+function rock_paper_2_form_submit($form, &$form_state) {
+  $choice_2 = $form_state['values']['choice_2'];
+  $choice_1 = $_SESSION['choice_1'];
+  if ($choice_1 === $choice_2) {
+    $result = 'Tie Game!';
+  } elseif ($choice_1 === 'rock' && $choice_2 === 'scissors') {
+    $result = 'Player 1 Wins!';
+  } elseif ($choice_1 === 'scissors' && $choice_2 === 'paper') {
+    $result = 'Player 1 Wins!';
+  } elseif ($choice_1 === 'paper' && $choice_2 === 'rock') {
+    $result = 'Player 1 Wins!';
+  } else {
+    $result = 'Player 2 Wins!';
+  }
+  $_SESSION['result'] = $result;
+  $form_state['redirect'] = 'rock_paper_results';
+}
+
+function rock_paper_result_display() {
+  return $_SESSION['result'];
+}
