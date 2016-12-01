@@ -18,26 +18,36 @@ function queen_attack_menu() {
 }
 
 function queen_attack_form() {
-  $form['queen_x'] = array(
+  $form['coordinate']['queen_x'] = array(
     '#title' => 'Queen X',
     '#type' => 'textfield',
     '#description' => t("Enter the Queen's x-coordinate"),
+    '#element_validate' => array('element_validate_integer_positive', 'element_validate_range2'),
+    '#required' => TRUE,
   );
-  $form['queen_y'] = array(
+  $form['coordinate']['queen_y'] = array(
     '#title' => 'Queen Y',
     '#type' => 'textfield',
     '#description' => t("Enter the Queen's y-coordinate"),
+    '#element_validate' => array('element_validate_integer_positive', 'element_validate_range2'),
+    '#required' => TRUE,
   );
-  $form['position_x'] = array(
+  $form['coordinate']['position_x'] = array(
     '#title' => 'Position X',
     '#type' => 'textfield',
     '#description' => t("Enter the x-coordinate for the position to be tested"),
+    '#element_validate' => array('element_validate_integer_positive', 'element_validate_range2'),
+    '#required' => TRUE,
   );
-  $form['position_y'] = array(
+  $form['coordinate']['position_y'] = array(
     '#title' => 'Position Y',
     '#type' => 'textfield',
     '#description' => t("Enter the y-coordinate for the position to be tested"),
+    '#element_validate' => array('element_validate_integer_positive', 'element_validate_range2'),
+    '#required' => TRUE,
   );
+  $form['coordinate']['#tree'] = TRUE;
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => 'Test',
@@ -45,12 +55,24 @@ function queen_attack_form() {
   return $form;
 }
 
+function element_validate_range2($element) {
+    if ($element['#value'] > 8 ) {
+        form_error($element, t('You can\'t make a move off of the board, nub!'));
+    }
+}
+
+function queen_attack_form_validate($form, &$form_state) {
+  if ($form_state['values']['coordinate']['queen_x'] === $form_state['values']['coordinate']['position_x'] && $form_state['values']['coordinate']['queen_y'] === $form_state['values']['coordinate']['position_y']) {
+    form_set_error('coordinate', 'You cannot have the pieces in the same place, nub!');
+  }
+}
+
 function queen_attack_form_submit($form, &$form_state) {
-  $queen_x = $form_state['values']['queen_x'];
-  $queen_y = $form_state['values']['queen_y'];
-  $position_x = $form_state['values']['position_x'];
-  $position_y = $form_state['values']['position_y'];
-  if (abs($queen_x - $position_x) === abs($queen_y - $position_y)) {
+  $queen_x = $form_state['values']['coordinate']['queen_x'];
+  $queen_y = $form_state['values']['coordinate']['queen_y'];
+  $position_x = $form_state['values']['coordinate']['position_x'];
+  $position_y = $form_state['values']['coordinate']['position_y'];
+  if ($queen_x == $position_x || $queen_y == $position_y || abs($queen_x - $position_x) === abs($queen_y - $position_y)) {
     $result = 'Attackable';
   } else {
     $result = 'Not Attackable';
