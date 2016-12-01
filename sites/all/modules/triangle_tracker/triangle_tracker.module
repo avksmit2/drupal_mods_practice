@@ -1,0 +1,76 @@
+<?php
+
+function triangle_tracker_menu() {
+  $items['triangle_tracker'] = array(
+    'title' => 'Triangle Tracker',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('triangle_tracker_form'),
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['triangle_tracker_results'] = array(
+    'title' => 'Triangle Tracker Results',
+    'page callback' => 'triangle_results',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function triangle_tracker_form() {
+  $form['side_1'] = array(
+    '#title' => 'Side 1',
+    '#type' => 'textfield',
+    '#description' => t('Enter a length for the first side of the triangle'),
+    '#element_validate' => array('element_validate_integer_positive'),
+    '#required' => TRUE,
+  );
+  $form['side_2'] = array(
+    '#title' => 'Side 2',
+    '#type' => 'textfield',
+    '#description' => t('Enter a length for the second side of the triangle'),
+    '#element_validate' => array('element_validate_integer_positive'),
+    '#required' => TRUE,
+  );
+  $form['side_3'] = array(
+    '#title' => 'Side 3',
+    '#type' => 'textfield',
+    '#description' => t('Enter a length for the third side of the triangle'),
+    '#element_validate' => array('element_validate_integer_positive'),
+    '#required' => TRUE,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Check',
+  );
+  return $form;
+}
+
+function triangle_tracker_form_validate($form, &$form_state) {
+  if ($form_state['values']['side_1'] + $form_state['values']['side_2'] <= $form_state['values']['side_3']) {
+    form_set_error('side_3', 'Side 3 is too long, this does not make a triangle');
+  } else if ($form_state['values']['side_2'] + $form_state['values']['side_3'] <= $form_state['values']['side_1']) {
+    form_set_error('side_1', 'Side 1 is too long, this does not make a triangle');
+  } else if ($form_state['values']['side_1'] + $form_state['values']['side_3'] <= $form_state['values']['side_2']) {
+    form_set_error('side_2', 'Side 2 is too long, this does not make a triangle');
+  }
+}
+
+function triangle_tracker_form_submit($form, &$form_state) {
+  $side_1 = $form_state['values']['side_1'];
+  $side_2 = $form_state['values']['side_2'];
+  $side_3 = $form_state['values']['side_3'];
+  if ($side_1 === $side_2 && $side_2 === $side_3) {
+    $triangle = "Equilateral";
+  } elseif ($side_1 === $side_2 || $side_2 === $side_3 || $side_1 === $side_3) {
+    $triangle = "Isosceles";
+  } else {
+    $triangle = "Scalene";
+  }
+  $_SESSION['triangle'] = $triangle;
+  $form_state['redirect'] = 'triangle_tracker_results';
+}
+
+function triangle_results() {
+  return $_SESSION['triangle'];
+}
