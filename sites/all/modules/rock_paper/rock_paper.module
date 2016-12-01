@@ -28,7 +28,13 @@ function rock_paper_menu() {
 function rock_paper_1_form() {
   $form['choice_1'] = array(
     '#title' => 'Player 1 choice',
-    '#type' => 'textfield',
+    '#type' => 'select',
+    '#options' => array(
+      'rock' => t('rock'),
+      'paper' => t('paper'),
+      'scissors' => t('scissors'),
+    ),
+    '#default_value' => 'rock',
     '#description' => t('Enter Player 1 choice of attack'),
     '#required' => TRUE,
   );
@@ -48,7 +54,13 @@ function rock_paper_1_form_submit($form, &$form_state) {
 function rock_paper_2_form() {
   $form['choice_2'] = array(
     '#title' => 'Player 2 choice',
-    '#type' => 'textfield',
+    '#type' => 'select',
+    '#options' => array(
+      'rock' => t('rock'),
+      'paper' => t('paper'),
+      'scissors' => t('scissors'),
+    ),
+    '#default_value' => 'rock',
     '#description' => t('Enter Player 2 choice of attack'),
     '#required' => TRUE,
   );
@@ -78,5 +90,5 @@ function rock_paper_2_form_submit($form, &$form_state) {
 }
 
 function rock_paper_result_display() {
-  return $_SESSION['result'];
+  return "<p class='winner'>" . $_SESSION['result'] . "</p>";
 }

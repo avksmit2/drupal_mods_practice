@@ -1,0 +1,27 @@
+.winner {
+  font-size: 8vh;
+  color: blue;
+}
+
+#title {
+  color: red;
+}
+
+#rock-paper-1-form, #rock-paper-2-form {
+  border: solid black;
+  padding-left: 20px;
+  width: 250px;
+}
+
+#rock-paper-1-form label {
+  font-size: 2vh;
+}
+
+#rock-paper-2-form label {
+  font-size: 2vh;
+}
+
+#edit-submit {
+  background-color: #4CAF50 !important;
+  color: white;
+}

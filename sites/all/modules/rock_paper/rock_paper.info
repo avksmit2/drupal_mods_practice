@@ -3,3 +3,4 @@ description = Creates a game of rock, paper, scissors
 package = My First Modules
 core = 7.x
 files[] = rock_paper.module
+stylesheets[all][] = styles.css
