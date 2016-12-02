@@ -3,3 +3,4 @@ description = Displays the favorite ice cream and state of user using input form
 package = My First Modules
 core = 7.x
 files[] = state_poll.module
+stylesheets[all][] = state_poll_styles.css

@@ -1,0 +1,10 @@
+#poll_results {
+  color: green;
+  font-size: 25px;
+  border: 2px dashed green;
+  border-radius: 3px;
+  background-color: yellow;
+  padding: 5px;
+  font-family: monospace;
+  font-weight: bold;
+}

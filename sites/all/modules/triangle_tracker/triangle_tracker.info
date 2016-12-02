@@ -3,3 +3,4 @@ description = Identifies a type of triangle based on lengths of the sides
 package = My First Modules
 core = 7.x
 files[] = triangle_tracker.module
+stylesheets[all][] = triangle_styles.css

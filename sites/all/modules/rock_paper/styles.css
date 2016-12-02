@@ -3,14 +3,25 @@
   color: blue;
 }
 
-#title {
-  color: red;
+#rock-paper-1-form .description {
+  font-size: 2vh;
+  font-style: italic;
+}
+
+#rock-paper-2-form .description {
+  font-size: 2vh;
+  font-style: italic;
+}
+
+#edit-choice-1, #edit-choice-2 {
+  font-size: 2vh;
 }
 
 #rock-paper-1-form, #rock-paper-2-form {
-  border: solid black;
+  border: 1px solid black;
   padding-left: 20px;
-  width: 250px;
+  width: 40vh;
+  background-color: #e6ccff;
 }
 
 #rock-paper-1-form label {
@@ -23,5 +34,6 @@
 
 #edit-submit {
   background-color: #4CAF50 !important;
-  color: white;
+  color: purple;
+  font-weight: bolder;
 }

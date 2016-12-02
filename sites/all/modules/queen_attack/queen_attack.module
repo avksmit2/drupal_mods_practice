@@ -68,14 +68,17 @@ function queen_attack_form_validate($form, &$form_state) {
 }
 
 function queen_attack_form_submit($form, &$form_state) {
+  $path = drupal_get_path('module', 'queen_attack');
+  $image = $path . '/white_queen_chess_piece.jpg';
+
   $queen_x = $form_state['values']['coordinate']['queen_x'];
   $queen_y = $form_state['values']['coordinate']['queen_y'];
   $position_x = $form_state['values']['coordinate']['position_x'];
   $position_y = $form_state['values']['coordinate']['position_y'];
   if ($queen_x == $position_x || $queen_y == $position_y || abs($queen_x - $position_x) === abs($queen_y - $position_y)) {
-    $result = 'Attackable';
+    $result = "<h1 id='attacks'>Attackable<br><img src = '" . $image . "'></h1>";
   } else {
-    $result = 'Not Attackable';
+    $result = "<h1 id='fail'>Not Attackable</h1>";
   }
   $_SESSION['queen_attack'] = $result;
   $form_state['redirect'] = 'queen_attack_result';

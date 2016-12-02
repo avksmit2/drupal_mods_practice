@@ -72,5 +72,7 @@ function triangle_tracker_form_submit($form, &$form_state) {
 }
 
 function triangle_results() {
-  return $_SESSION['triangle'];
+  $path = drupal_get_path('module', 'triangle_tracker');
+  $image = $path . '/triangle.gif';
+  return "<p id='triangle'>" . $_SESSION['triangle'] . "<br><img src = '" . $image . "'></p>";
 }
